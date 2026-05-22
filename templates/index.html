@@ -1,0 +1,216 @@
+{%- extends "base.html" -%}
+{%- block content -%}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-chip">☕ Eje Cafetero · IoT · Colombia</div>
+    <h1>Riego <em>inteligente</em> en<br>cultivos de café</h1>
+    <p>Plataforma de monitoreo con sensores IoT para Caldas, Risaralda y Quindío. Datos en tiempo real para optimizar cada gota de agua en el cultivo.</p>
+    <div class="hero-btns">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('datos.index') }}" class="btn-prim">Ver datos del cultivo</a>
+        <a href="{{ url_for('maqueta.index') }}" class="btn-sec">Explorar maqueta</a>
+      {% else %}
+        <a href="{{ url_for('auth.register') }}" class="btn-prim">Comenzar ahora</a>
+        <a href="{{ url_for('auth.login') }}" class="btn-sec">Iniciar sesión</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-art">{% include 'partials/casas_svg.html' %}</div>
+</section>
+
+<!-- STATS -->
+<section class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">El eje en cifras</div>
+    <h2 class="sec-title">Números que importan</h2>
+    <div class="stats-grid stats-grid-6">
+      <div class="stat-card"><div class="stat-num">560<span class="stat-unit">k</span></div><p class="stat-desc">Hectáreas de café en Colombia — el Eje es el corazón productor</p></div>
+      <div class="stat-card"><div class="stat-num">18<span class="stat-unit">°C</span></div><p class="stat-desc">Temperatura ideal para el arábica de altura en la región</p></div>
+      <div class="stat-card"><div class="stat-num">1800<span class="stat-unit">mm</span></div><p class="stat-desc">Precipitación anual recomendada para producción óptima</p></div>
+      <div class="stat-card"><div class="stat-num">30<span class="stat-unit">%</span></div><p class="stat-desc">Ahorro potencial en agua con riego guiado por sensores IoT</p></div>
+      <div class="stat-card"><div class="stat-num">3<span class="stat-unit">° puesto</span></div><p class="stat-desc">Colombia, tercer productor mundial detrás de Brasil y Vietnam</p></div>
+      <div class="stat-card"><div class="stat-num">14M<span class="stat-unit">sacos</span></div><p class="stat-desc">Producción anual colombiana — cada saco pesa 60 kg</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MOSAICO IMAGENES -->
+<section class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip chip-verde">Así es el cultivo</div>
+    <h2 class="sec-title">Paisajes y vida del cafetal</h2>
+    <div class="mosaic-grid">
+      <div class="mosaic-card mc-verde"><div class="mosaic-bg">🌿</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Cafetal en floración</strong><span>Chinchiná, Caldas · 1.600 msnm</span></div></div>
+      <div class="mosaic-card mc-cafe"><div class="mosaic-bg">☕</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Grano cereza</strong><span>Lista para cosechar</span></div></div>
+      <div class="mosaic-card mc-oscuro"><div class="mosaic-bg">🏡</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Finca cafetera</strong><span>Salento, Quindío</span></div></div>
+    </div>
+    <div class="mosaic-grid mosaic-grid-sm" style="margin-top:8px">
+      <div class="mosaic-card mc-tierra"><div class="mosaic-bg">💧</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Sistema de riego</strong><span>Sensor IoT activo</span></div></div>
+      <div class="mosaic-card mc-verde"><div class="mosaic-bg">🌄</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Amanecer en el Eje</strong><span>Risaralda</span></div></div>
+      <div class="mosaic-card mc-cafe"><div class="mosaic-bg">🏛️</div><div class="mosaic-overlay"></div><div class="mosaic-label"><strong>Casa colonial</strong><span>Patrimonio UNESCO</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DONDE CRECE -->
+<section class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip chip-azul">Producción mundial</div>
+    <h2 class="sec-title">¿Dónde crece el café?</h2>
+    <p class="sec-sub">El café crece en el "Cinturón del café" — una franja entre los trópicos con clima, altitud y lluvia ideales.</p>
+    <div class="zonas-grid">
+      <div class="zona-card"><span class="zona-ico">🌎</span><div><h3 class="zona-nom">América Latina</h3><p class="zona-desc">Colombia, Brasil, Perú, Guatemala y México lideran. Colombia produce arábica de altísima calidad por su geografía montañosa.</p></div></div>
+      <div class="zona-card"><span class="zona-ico">🌍</span><div><h3 class="zona-nom">África y Medio Oriente</h3><p class="zona-desc">Etiopía, cuna del café. Kenya, Uganda y Yemen producen granos con perfiles frutales únicos reconocidos mundialmente.</p></div></div>
+      <div class="zona-card"><span class="zona-ico">🌏</span><div><h3 class="zona-nom">Asia y Oceanía</h3><p class="zona-desc">Vietnam (robusta), Indonesia (Sumatra), India y Papua Nueva Guinea. Asia es el segundo bloque productor global.</p></div></div>
+      <div class="zona-card"><span class="zona-ico">🏔️</span><div><h3 class="zona-nom">Altitud ideal</h3><p class="zona-desc">El café arábica prefiere 600–2.200 msnm. El Eje Cafetero colombiano (1.200–2.000 m) está en el rango perfecto.</p></div></div>
+      <div class="zona-card"><span class="zona-ico">🌡️</span><div><h3 class="zona-nom">Clima café</h3><p class="zona-desc">18–22°C promedio anual, sin heladas, lluvia bien distribuida. El Eje tiene régimen bimodal — dos cosechas al año.</p></div></div>
+      <div class="zona-card"><span class="zona-ico">🌱</span><div><h3 class="zona-nom">Suelos volcánicos</h3><p class="zona-desc">Los suelos de origen volcánico del Eje son ricos en minerales, bien drenados y retienen humedad idealmente.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO DEL CAFE -->
+<section class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Del árbol a la taza</div>
+    <h2 class="sec-title">El proceso del café</h2>
+    <div class="proceso-grid">
+      <div class="paso-card"><div class="paso-ico">🌱</div><div class="paso-num-lbl">Paso 01</div><h3 class="paso-nom">Siembra</h3><p class="paso-desc">Semilla en almácigo, trasplante a los 6 meses cuando alcanza 20 cm</p></div>
+      <div class="paso-card"><div class="paso-ico">🌿</div><div class="paso-num-lbl">Paso 02</div><h3 class="paso-nom">Cultivo</h3><p class="paso-desc">El riego IoT optimiza el agua en cada etapa del desarrollo del cafeto</p></div>
+      <div class="paso-card"><div class="paso-ico">🍒</div><div class="paso-num-lbl">Paso 03</div><h3 class="paso-nom">Cosecha</h3><p class="paso-desc">Se recoge el grano cereza en su punto exacto de madurez — rojo brillante</p></div>
+      <div class="paso-card"><div class="paso-ico">🫘</div><div class="paso-num-lbl">Paso 04</div><h3 class="paso-nom">Beneficio</h3><p class="paso-desc">Despulpe, fermentación, lavado y secado del grano en marquesinas</p></div>
+      <div class="paso-card"><div class="paso-ico">🔥</div><div class="paso-num-lbl">Paso 05</div><h3 class="paso-nom">Tostión</h3><p class="paso-desc">El calor desarrolla los 800+ compuestos aromáticos únicos del café</p></div>
+      <div class="paso-card"><div class="paso-ico">☕</div><div class="paso-num-lbl">Paso 06</div><h3 class="paso-nom">Preparación</h3><p class="paso-desc">Espresso, filtrado, prensa o colado — cada método tiene su magia</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DATOS CON TABS -->
+<section class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">Datos fascinantes</div>
+    <h2 class="sec-title">Curiosidades del café</h2>
+    <div class="mundo-tabs">
+      <button class="mundo-tab active" data-tab="historia">Historia</button>
+      <button class="mundo-tab" data-tab="ciencia">Ciencia</button>
+      <button class="mundo-tab" data-tab="colombia">Colombia</button>
+      <button class="mundo-tab" data-tab="iot">IoT y riego</button>
+    </div>
+    <div class="mundo-panel active" id="tab-historia">
+      <div class="mundo-list">
+        <div class="mundo-item"><div class="mundo-num">850</div><div class="mundo-txt">Año aproximado del descubrimiento del café por el pastor Kaldi en Etiopía, quien notó que sus cabras saltaban tras comer bayas rojas.<span>Etiopía, siglo IX</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">1554</div><div class="mundo-txt">Primera cafetería del mundo abre en Constantinopla. Se convirtieron rápidamente en centros culturales y políticos del Imperio Otomano.<span>Imperio Otomano</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">1723</div><div class="mundo-txt">Gabriel de Clieu lleva una planta de café al Caribe. De esa planta descienden la mayoría de los cafés de América Latina, incluido el colombiano.<span>Martinica, Caribe</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">1835</div><div class="mundo-txt">El café llega al Eje Cafetero colombiano. Los colonos antioqueños inician el cultivo masivo en Caldas, Quindío y Risaralda.<span>Eje Cafetero, Colombia</span></div></div>
+      </div>
+    </div>
+    <div class="mundo-panel" id="tab-ciencia">
+      <div class="mundo-list">
+        <div class="mundo-item"><div class="mundo-num">800+</div><div class="mundo-txt">Compuestos aromáticos que se desarrollan durante la tostión. El vino solo tiene ~200. El café es uno de los alimentos más complejos químicamente.<span>Química del café</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">140L</div><div class="mundo-txt">Agua necesaria para producir una sola taza. El riego inteligente puede reducir este consumo hasta un 35% sin afectar la producción.<span>Huella hídrica</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">pH 5.5</div><div class="mundo-txt">pH ideal del suelo para el café arábica. Suelos fuera de rango bloquean la absorción de nutrientes y reducen la producción.<span>Química del suelo</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">95°C</div><div class="mundo-txt">Temperatura ideal del agua para preparar café. Muy caliente quema el grano; muy fría no extrae los compuestos aromáticos completos.<span>Preparación perfecta</span></div></div>
+      </div>
+    </div>
+    <div class="mundo-panel" id="tab-colombia">
+      <div class="mundo-list">
+        <div class="mundo-item"><div class="mundo-num">#3</div><div class="mundo-txt">Colombia es el tercer productor mundial y el primero en café arábica lavado de alta calidad. Exporta a más de 60 países.<span>Producción mundial</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">500k</div><div class="mundo-txt">Familias caficultoras en Colombia. El 95% son pequeños productores con menos de 5 hectáreas, lo que hace única la producción nacional.<span>Estructura social</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">2011</div><div class="mundo-txt">El Paisaje Cultural Cafetero fue declarado Patrimonio de la Humanidad por la UNESCO, reconociendo su integración de cultura y naturaleza.<span>Patrimonio UNESCO</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">2x</div><div class="mundo-txt">Cosechas al año en el Eje Cafetero gracias al régimen bimodal de lluvias (mitaca y cosecha principal). Ventaja única frente a otros países.<span>Doble cosecha</span></div></div>
+      </div>
+    </div>
+    <div class="mundo-panel" id="tab-iot">
+      <div class="mundo-list">
+        <div class="mundo-item"><div class="mundo-num">30%</div><div class="mundo-txt">Reducción en consumo de agua con riego IoT vs riego tradicional. Ahorro económico y ambiental para el caficultor.<span>Eficiencia IoT</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">20%</div><div class="mundo-txt">Aumento en productividad cuando el riego se basa en sensores de humedad de suelo. Las plantas reciben agua en el momento exacto.<span>Impacto en cosecha</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">60-80%</div><div class="mundo-txt">Rango óptimo de humedad de suelo para café arábica. Bajo del 60% hay estrés hídrico; sobre el 85% aumentan las enfermedades fúngicas.<span>Parámetro clave del proyecto</span></div></div>
+        <div class="mundo-item"><div class="mundo-num">ESP32</div><div class="mundo-txt">Microcontrolador de la maqueta. Mide temperatura, humedad y pH del suelo y envía datos en tiempo real vía WiFi a esta plataforma.<span>Hardware del proyecto</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="sec sec-verde">
+  <div class="sec-inner">
+    <div class="sec-chip chip-verde">Buenas prácticas</div>
+    <h2 class="sec-title title-blanco">Tips de riego inteligente</h2>
+    <div class="tips-grid tips-grid-6">
+      <div class="tip-card"><div class="tip-num">01</div><h3 class="tip-title">Riega en horas frescas</h3><p class="tip-text">Entre 6–8 am o después de las 4 pm se reduce la evaporación hasta 40%, maximizando la absorción del cafeto.</p></div>
+      <div class="tip-card"><div class="tip-num">02</div><h3 class="tip-title">Monitorea la humedad</h3><p class="tip-text">La humedad óptima del suelo está entre 60–80%. Los sensores IoT alertan exactamente cuándo es momento de regar.</p></div>
+      <div class="tip-card"><div class="tip-num">03</div><h3 class="tip-title">Adapta al ciclo fenológico</h3><p class="tip-text">Durante la fructificación el cafeto pide más agua. Sube la frecuencia de riego un 20% en esta etapa crítica.</p></div>
+      <div class="tip-card"><div class="tip-num">04</div><h3 class="tip-title">Cruza lluvia y riego</h3><p class="tip-text">Integra pluviómetros al sistema para no regar cuando ya llovió suficiente. Ahorra agua y evita enfermedades.</p></div>
+      <div class="tip-card"><div class="tip-num">05</div><h3 class="tip-title">Conoce el pH de tu suelo</h3><p class="tip-text">Mantén el pH entre 5.5–6.5. Un suelo fuera de rango bloquea nutrientes aunque riegues perfectamente.</p></div>
+      <div class="tip-card"><div class="tip-num">06</div><h3 class="tip-title">Revisa la temperatura</h3><p class="tip-text">Sobre 30°C activa el riego automáticamente. Por debajo de 15°C reduce la frecuencia para evitar hongos de raíz.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICIAS -->
+<section class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Actualidad</div>
+    <h2 class="sec-title">Noticias del café colombiano</h2>
+    <div class="noticias-grid">
+      <div class="noticia-card"><div class="noticia-img nc-verde">📡</div><div class="noticia-body"><div class="noticia-cat">Tecnología</div><h3 class="noticia-tit">IoT transforma los cultivos cafeteros del Eje</h3><p class="noticia-desc">Pequeños caficultores de Caldas y Risaralda adoptan sensores de bajo costo para monitorear suelos y optimizar el riego.</p><div class="noticia-meta"><span>📅 May 2025</span><span>📍 Eje Cafetero</span></div></div></div>
+      <div class="noticia-card"><div class="noticia-img nc-cafe">🏆</div><div class="noticia-body"><div class="noticia-cat">Calidad</div><h3 class="noticia-tit">Café colombiano gana premios en competencia mundial SCA</h3><p class="noticia-desc">Productores del Quindío y Huila obtienen los puntajes más altos en la Specialty Coffee Association.</p><div class="noticia-meta"><span>📅 Abr 2025</span><span>📍 Global</span></div></div></div>
+      <div class="noticia-card"><div class="noticia-img nc-azul">🌧️</div><div class="noticia-body"><div class="noticia-cat">Clima</div><h3 class="noticia-tit">El Niño afecta producción — el riego inteligente como respuesta</h3><p class="noticia-desc">La Federación de Cafeteros promueve sistemas de riego basados en datos para mitigar la variabilidad climática.</p><div class="noticia-meta"><span>📅 Mar 2025</span><span>📍 Colombia</span></div></div></div>
+      <div class="noticia-card"><div class="noticia-img nc-tierra">🎓</div><div class="noticia-body"><div class="noticia-cat">Investigación</div><h3 class="noticia-tit">Cenicafé publica guía de umbrales de riego para arábica</h3><p class="noticia-desc">El Centro Nacional de Investigaciones de Café actualiza sus recomendaciones de humedad de suelo por altitud.</p><div class="noticia-meta"><span>📅 Feb 2025</span><span>📍 Cenicafé</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPARTAMENTOS -->
+<section class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip chip-verde">Nuestra región</div>
+    <h2 class="sec-title">Departamentos del Eje Cafetero</h2>
+    <div class="deptos-grid">
+      <div class="depto-card">
+        <div class="depto-header"><span class="depto-icon">🏔️</span><div><h3 class="depto-name">Caldas</h3><p class="depto-sub">27 municipios · Capital: Manizales</p></div></div>
+        <div class="depto-stats"><div class="depto-stat"><span class="ds-num">98k</span><span class="ds-lbl">ha café</span></div><div class="depto-stat"><span class="ds-num">1.800m</span><span class="ds-lbl">altitud</span></div><div class="depto-stat"><span class="ds-num">2x</span><span class="ds-lbl">cosecha</span></div></div>
+      </div>
+      <div class="depto-card">
+        <div class="depto-header"><span class="depto-icon">☕</span><div><h3 class="depto-name">Risaralda</h3><p class="depto-sub">14 municipios · Capital: Pereira</p></div></div>
+        <div class="depto-stats"><div class="depto-stat"><span class="ds-num">62k</span><span class="ds-lbl">ha café</span></div><div class="depto-stat"><span class="ds-num">1.600m</span><span class="ds-lbl">altitud</span></div><div class="depto-stat"><span class="ds-num">22°C</span><span class="ds-lbl">temp.</span></div></div>
+      </div>
+      <div class="depto-card">
+        <div class="depto-header"><span class="depto-icon">🌿</span><div><h3 class="depto-name">Quindío</h3><p class="depto-sub">12 municipios · Capital: Armenia</p></div></div>
+        <div class="depto-stats"><div class="depto-stat"><span class="ds-num">34k</span><span class="ds-lbl">ha café</span></div><div class="depto-stat"><span class="ds-num">1.500m</span><span class="ds-lbl">altitud</span></div><div class="depto-stat"><span class="ds-num">20°C</span><span class="ds-lbl">temp.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2 class="cta-title">¿Listo para optimizar tu cultivo?</h2>
+  <p class="cta-sub">Accede a los datos IoT en tiempo real de tu zona del Eje Cafetero</p>
+  <div class="cta-btns">
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('datos.index') }}" class="btn-prim" style="background:white;color:#8b4513">Ver datos del cultivo</a>
+      <a href="{{ url_for('maqueta.index') }}" class="btn-cta-out">Ver maqueta</a>
+    {% else %}
+      <a href="{{ url_for('auth.register') }}" class="btn-prim" style="background:white;color:#8b4513">Crear cuenta gratuita</a>
+      <a href="{{ url_for('datos.index') }}" class="btn-cta-out">Ver datos públicos</a>
+    {% endif %}
+  </div>
+</section>
+
+{%- endblock -%}
+
+{%- block scripts -%}
+<script>
+document.querySelectorAll('.mundo-tab').forEach(function(btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.mundo-tab').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.mundo-panel').forEach(function(p){ p.classList.remove('active'); });
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+  });
+});
+</script>
+{%- endblock -%}

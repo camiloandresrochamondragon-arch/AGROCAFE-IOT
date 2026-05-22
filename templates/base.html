@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titulo }} — AgroIoT Cafetero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <a class="nav-logo" href="{{ url_for('main.index') }}">
+      <div class="nav-logo-icon">AC</div>
+      <span>Agro<em>Café</em> IoT</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="{{ url_for('main.index') }}"
+         class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">
+        Inicio
+      </a>
+      <a href="{{ url_for('datos.index') }}"
+         class="nav-link {% if request.blueprint == 'datos' %}active{% endif %}">
+        Datos IoT
+      </a>
+      <a href="{{ url_for('maqueta.index') }}"
+         class="nav-link {% if request.blueprint == 'maqueta' %}active{% endif %}">
+        Maqueta
+      </a>
+    </div>
+
+    <div class="nav-actions">
+      {% if current_user.is_authenticated %}
+        <span class="nav-user">☕ {{ current_user.nombre.split()[0] }}</span>
+        <a href="{{ url_for('auth.logout') }}" class="nav-btn-outline">Cerrar sesión</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="nav-btn">Iniciar sesión</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ── FLASH MESSAGES ───────────────────────────────────────────────────── -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">
+            <span>{{ message }}</span>
+            <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ── CONTENIDO ────────────────────────────────────────────────────────── -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── FOOTER ───────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">AgroIoT Eje Cafetero</div>
+      <p class="footer-txt">Optimización de riego en cultivos de café — Alejandra Peña · Proyecto de grado 2025</p>
+      <div class="footer-deptos">Caldas · Risaralda · Quindío</div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

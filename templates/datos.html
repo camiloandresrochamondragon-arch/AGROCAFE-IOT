@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header bg-crema">
+  <div class="ph-inner">
+    <div class="sec-chip">Monitoreo en tiempo real</div>
+    <h1 class="ph-title">Datos IoT del Eje Cafetero</h1>
+    <p class="ph-sub">Filtra por departamento, municipio o estado del cultivo para explorar cada zona cafetera.</p>
+  </div>
+</div>
+
+<!-- ── FILTROS ────────────────────────────────────────────────────────────────── -->
+<div class="filtros-bar">
+  <div class="filtros-inner">
+    <span class="filt-lbl">Filtrar por:</span>
+    <div class="filtros-row">
+      <select class="filt-select" id="sel-dept" onchange="cargarMunicipios()">
+        <option value="">Todos los departamentos</option>
+        {% for d in departamentos %}
+          <option value="{{ d.nombre }}">{{ d.nombre }}</option>
+        {% endfor %}
+      </select>
+
+      <select class="filt-select" id="sel-mun">
+        <option value="">Todos los municipios</option>
+      </select>
+
+      <select class="filt-select" id="sel-estado">
+        <option value="">Todos los estados</option>
+        <option>Óptimo</option>
+        <option>Riego requerido</option>
+        <option>Crítico</option>
+      </select>
+
+      <button class="btn-filtrar" onclick="cargarDatos()">Aplicar filtros</button>
+      <button class="btn-limpiar" onclick="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── KPIs ───────────────────────────────────────────────────────────────────── -->
+<div class="kpis-bar">
+  <div class="kpis-inner" id="kpis">
+    <div class="kpi-card">
+      <div class="kpi-ico ico-rojo">🌡️</div>
+      <div><div class="kpi-val" id="kpi-temp">—</div><div class="kpi-lbl">Temp. promedio</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-azul">💧</div>
+      <div><div class="kpi-val" id="kpi-hum">—</div><div class="kpi-lbl">Humedad suelo</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-verde">🌧️</div>
+      <div><div class="kpi-val" id="kpi-lluvia">—</div><div class="kpi-lbl">Precipitación</div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-ocre">📡</div>
+      <div><div class="kpi-val" id="kpi-total">—</div><div class="kpi-lbl">Sensores activos</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TABLA ──────────────────────────────────────────────────────────────────── -->
+<div class="tabla-section">
+  <div class="tabla-inner">
+    <div class="tabla-card">
+      <div class="tabla-head-bar">
+        <h2 class="tabla-titulo">Lecturas por zona</h2>
+        <span class="tabla-count" id="tabla-count">Cargando…</span>
+      </div>
+      <div class="tabla-responsive">
+        <table class="tabla" id="tabla-datos">
+          <thead>
+            <tr>
+              <th>Departamento</th>
+              <th>Municipio</th>
+              <th>Temp (°C)</th>
+              <th>Humedad suelo</th>
+              <th>Precipitación</th>
+              <th>pH suelo</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body">
+            <tr><td colspan="8" class="tabla-loading">Cargando datos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── POWER BI ───────────────────────────────────────────────────────────────── -->
+<div class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Visualizaciones</div>
+    <h2 class="sec-title">Reportes Power BI</h2>
+    <p class="sec-sub">Los reportes se sincronizan con los filtros aplicados arriba una vez conectada la base de datos.</p>
+    <div class="pbi-grid">
+      <div class="pbi-card">
+        <!-- Reemplazar el div de abajo por el iframe de PowerBI -->
+        <!-- <iframe title="Reporte PBI" width="100%" height="100%" src="TU_URL_POWERBI" frameborder="0" allowFullScreen></iframe> -->
+        <div class="pbi-placeholder">
+          <span class="pbi-ico">📊</span>
+          <strong>Humedad por municipio</strong>
+          <p>Barras comparativas filtradas por departamento</p>
+        </div>
+      </div>
+      <div class="pbi-card">
+        <div class="pbi-placeholder">
+          <span class="pbi-ico">📈</span>
+          <strong>Temperatura histórica</strong>
+          <p>Serie de tiempo por sensor y zona cafetera</p>
+        </div>
+      </div>
+      <div class="pbi-card">
+        <div class="pbi-placeholder">
+          <span class="pbi-ico">🗺️</span>
+          <strong>Mapa de calor</strong>
+          <p>Distribución geográfica del estrés hídrico</p>
+        </div>
+      </div>
+      <div class="pbi-card">
+        <div class="pbi-placeholder">
+          <span class="pbi-ico">💧</span>
+          <strong>Consumo vs precipitación</strong>
+          <p>Comparativo mensual de agua aplicada vs lluvia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+  // Cargar datos al entrar
+  cargarDatos();
+</script>
+{% endblock %}

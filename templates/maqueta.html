@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header bg-verde-suave">
+  <div class="ph-inner">
+    <div class="sec-chip chip-verde">Prototipo IoT</div>
+    <h1 class="ph-title">Maqueta de riego inteligente</h1>
+    <p class="ph-sub">Prototipo físico a escala de un lote de cultivo, con sensores ambientales, control automático de riego y telemetría en tiempo real.</p>
+    <div class="online-badge">
+      <span class="online-dot"></span>
+      Sensor activo — actualizando cada 5 segundos
+    </div>
+  </div>
+</div>
+
+<!-- ── GALERÍA DE LA MAQUETA ──────────────────────────────────────────────── -->
+<div class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">El prototipo físico</div>
+    <h2 class="sec-title">Así se ve la maqueta</h2>
+    <p class="sec-sub">Construida sobre una caja plástica con tierra y sustrato orgánico, integra el cultivo, los sensores y el sistema de riego por goteo en un solo módulo.</p>
+
+    <div class="maqueta-galeria">
+      <figure class="maq-foto maq-foto-grande">
+        <img src="{{ url_for('static', filename='img/maqueta/maqueta-general.jpg') }}"
+             alt="Vista general de la maqueta: cultivo de lechuga junto al módulo de electrónica con Arduino y sensores">
+        <figcaption>Vista general — cultivo + módulo de control electrónico</figcaption>
+      </figure>
+      <figure class="maq-foto">
+        <img src="{{ url_for('static', filename='img/maqueta/maqueta-electronica.jpg') }}"
+             alt="Detalle de la electrónica: Arduino Nano, sensor BME280, driver L298N y cableado">
+        <figcaption>Módulo de sensores y driver de la bomba</figcaption>
+      </figure>
+      <figure class="maq-foto">
+        <img src="{{ url_for('static', filename='img/maqueta/maqueta-cultivo.jpg') }}"
+             alt="Vista superior del cultivo con el sistema de riego por goteo y mangueras">
+        <figcaption>Cultivo con riego por goteo y aspersores</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<!-- ── DESCRIPCIÓN DEL PROBLEMA ───────────────────────────────────────────── -->
+<div class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">El problema</div>
+    <h2 class="sec-title">¿Por qué riego inteligente?</h2>
+    <p class="sec-sub">En el Eje Cafetero, los sistemas de riego tradicionales operan por horarios fijos o de forma manual, sin considerar las condiciones reales del suelo ni el clima del momento. Esto genera dos problemas críticos:</p>
+    <div class="problema-grid">
+      <div class="problema-card">
+        <div class="problema-ico ico-azul">💧</div>
+        <h3 class="problema-tit">Desperdicio hídrico</h3>
+        <p class="problema-txt">Se riega aunque el suelo ya tenga humedad suficiente, malgastando agua de forma innecesaria.</p>
+      </div>
+      <div class="problema-card">
+        <div class="problema-ico ico-rojo">🌡️</div>
+        <h3 class="problema-tit">Estrés hídrico</h3>
+        <p class="problema-txt">En picos de temperatura o baja humedad, el riego manual llega tarde y afecta la calidad del grano.</p>
+      </div>
+      <div class="problema-card">
+        <div class="problema-ico ico-verde">🤖</div>
+        <h3 class="problema-tit">Nuestra solución</h3>
+        <p class="problema-txt">Un sistema IoT que mide en tiempo real, riega de forma autónoma según el suelo y registra cada lectura para analizarla.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ARQUITECTURA EN 5 CAPAS ────────────────────────────────────────────── -->
+<div class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">Cómo funciona</div>
+    <h2 class="sec-title">Arquitectura del sistema</h2>
+    <p class="sec-sub">Un pipeline completo desde la captura física del dato hasta la visualización analítica, en cinco capas funcionales.</p>
+
+    <div class="capas-lista">
+      <div class="capa-item">
+        <div class="capa-num">1</div>
+        <div class="capa-body">
+          <h3 class="capa-tit">Captura IoT <span class="badge badge-ok">Activo</span></h3>
+          <p class="capa-txt">Sensores conectados al Arduino Nano: BME280 (temperatura, humedad y presión), LDR (luz) y sensor resistivo de humedad de suelo. Lee cada 2 segundos y envía JSON por puerto serial.</p>
+        </div>
+      </div>
+      <div class="capa-item">
+        <div class="capa-num">2</div>
+        <div class="capa-body">
+          <h3 class="capa-tit">Dashboard en tiempo real <span class="badge badge-ok">Activo</span></h3>
+          <p class="capa-txt">Script en Python (Matplotlib + PySerial) que recibe el JSON, grafica las variables y permite el control manual de la bomba (ON / OFF / AUTO).</p>
+        </div>
+      </div>
+      <div class="capa-item">
+        <div class="capa-num">3</div>
+        <div class="capa-body">
+          <h3 class="capa-tit">Almacenamiento CSV <span class="badge badge-ok">Activo</span></h3>
+          <p class="capa-txt">Cada lectura se exporta a un archivo CSV con marca de tiempo. Es el archivo que alimenta esta plataforma web con los datos históricos del prototipo.</p>
+        </div>
+      </div>
+      <div class="capa-item">
+        <div class="capa-num">4</div>
+        <div class="capa-body">
+          <h3 class="capa-tit">Base de datos + ETL <span class="badge badge-wa">En proceso</span></h3>
+          <p class="capa-txt">Carga del CSV en una base de datos relacional mediante un proceso ETL. Tablas: Sensores, Mediciones, Cultivos y Alertas.</p>
+        </div>
+      </div>
+      <div class="capa-item">
+        <div class="capa-num">5</div>
+        <div class="capa-body">
+          <h3 class="capa-tit">Análisis en Power BI <span class="badge badge-wa">En proceso</span></h3>
+          <p class="capa-txt">Dashboard analítico conectado al Data Warehouse. KPIs: consumo de agua, eventos de riego, alertas por suelo seco y correlación temperatura-humedad.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs ÚLTIMA LECTURA -->
+<div class="kpis-bar">
+  <div class="kpis-inner kpis-6">
+    <div class="kpi-card">
+      <div class="kpi-ico ico-rojo">🌡️</div>
+      <div>
+        <div class="kpi-val" id="live-temp">
+          {% if ultima %}{{ ultima.temp }}°C{% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Temperatura</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-azul">💧</div>
+      <div>
+        <div class="kpi-val" id="live-hum">
+          {% if ultima %}{{ ultima.hum }}%{% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Humedad aire</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-cafe">🌱</div>
+      <div>
+        <div class="kpi-val" id="live-suelo">
+          {% if ultima %}{{ ultima.suelo }}%{% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Humedad suelo</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-ocre">☀️</div>
+      <div>
+        <div class="kpi-val" id="live-luz">
+          {% if ultima %}{{ ultima.luz }} lux{% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Luz</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico ico-verde">📊</div>
+      <div>
+        <div class="kpi-val" id="live-pres">
+          {% if ultima %}{{ ultima.pres }} hPa{% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Presión</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-ico {% if ultima and ultima.bomba %}ico-rojo{% else %}ico-cafe{% endif %}">
+        ⚙️
+      </div>
+      <div>
+        <div class="kpi-val" id="live-bomba">
+          {% if ultima %}
+            {% if ultima.bomba %}🟢 ON{% else %}⚪ OFF{% endif %}
+          {% else %}—{% endif %}
+        </div>
+        <div class="kpi-lbl">Bomba riego</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESUMEN ESTADÍSTICO -->
+{% if stats and stats.total %}
+<div class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Resumen del período</div>
+    <h2 class="sec-title">Estadísticas de las mediciones</h2>
+    <div class="stats-grid stats-grid-6">
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.total }}</div>
+        <p class="stat-desc">Lecturas registradas en la sesión</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ '%.1f'|format(stats.temp_prom) }}<span class="stat-unit">°C</span></div>
+        <p class="stat-desc">Temperatura promedio del período</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ '%.1f'|format(stats.hum_prom) }}<span class="stat-unit">%</span></div>
+        <p class="stat-desc">Humedad del aire promedio</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ '%.0f'|format(stats.suelo_prom) }}<span class="stat-unit">%</span></div>
+        <p class="stat-desc">Humedad de suelo promedio</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ '%.1f'|format(stats.temp_min) }}<span class="stat-unit">°C</span></div>
+        <p class="stat-desc">Temperatura mínima registrada</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ '%.1f'|format(stats.temp_max) }}<span class="stat-unit">°C</span></div>
+        <p class="stat-desc">Temperatura máxima registrada</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- GRÁFICOS -->
+<div class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">Visualización en tiempo real</div>
+    <h2 class="sec-title">Histórico de sensores</h2>
+    <div class="graficos-grid">
+      <div class="grafico-card">
+        <div class="grafico-header">
+          <span class="grafico-tit">🌡️ Temperatura (°C)</span>
+          <span class="grafico-badge">Últimas 60 lecturas</span>
+        </div>
+        <canvas id="chart-temp" height="120"></canvas>
+      </div>
+      <div class="grafico-card">
+        <div class="grafico-header">
+          <span class="grafico-tit">💧 Humedad aire (%)</span>
+          <span class="grafico-badge">Últimas 60 lecturas</span>
+        </div>
+        <canvas id="chart-hum" height="120"></canvas>
+      </div>
+      <div class="grafico-card">
+        <div class="grafico-header">
+          <span class="grafico-tit">🌱 Humedad suelo (%)</span>
+          <span class="grafico-badge">Últimas 60 lecturas</span>
+        </div>
+        <canvas id="chart-suelo" height="120"></canvas>
+      </div>
+      <div class="grafico-card">
+        <div class="grafico-header">
+          <span class="grafico-tit">☀️ Luz (lux)</span>
+          <span class="grafico-badge">Últimas 60 lecturas</span>
+        </div>
+        <canvas id="chart-luz" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLA DE MEDICIONES -->
+<div class="tabla-section">
+  <div class="tabla-inner">
+    <div class="tabla-card">
+      <div class="tabla-head-bar">
+        <h2 class="tabla-titulo">Registro de mediciones</h2>
+        <span class="tabla-count" id="total-registros">
+          {% if stats %}{{ stats.total }} registros{% endif %}
+        </span>
+      </div>
+      <div class="tabla-responsive">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Temp (°C)</th>
+              <th>Hum. aire (%)</th>
+              <th>Hum. suelo (%)</th>
+              <th>Presión (hPa)</th>
+              <th>Luz (lux)</th>
+              <th>Bomba</th>
+              <th>Manual</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-mediciones">
+            <tr><td colspan="8" class="tabla-loading">Cargando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COMPONENTES DE HARDWARE ────────────────────────────────────────────── -->
+<div class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Hardware</div>
+    <h2 class="sec-title">Componentes de la maqueta</h2>
+    <p class="sec-sub">Cada elemento cumple un rol dentro del ciclo IoT: percibir, decidir y actuar sobre el cultivo.</p>
+    <div class="tabla-card" style="margin-top:1.5rem;">
+      <div class="tabla-responsive">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Referencia</th>
+              <th>Función en el sistema</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Microcontrolador</strong></td>
+              <td>Arduino Nano</td>
+              <td>Procesa las lecturas, ejecuta la lógica de riego y envía datos JSON por serial a 9600 baud.</td>
+            </tr>
+            <tr>
+              <td><strong>Sensor ambiental</strong></td>
+              <td>BME280 (I2C)</td>
+              <td>Mide temperatura del aire, humedad relativa y presión atmosférica. Bus I2C en pines A4/A5.</td>
+            </tr>
+            <tr>
+              <td><strong>Sensor de luz</strong></td>
+              <td>LDR — pin A0</td>
+              <td>Fotorresistencia que infiere la radiación solar para estimar la evapotranspiración.</td>
+            </tr>
+            <tr>
+              <td><strong>Sensor de suelo</strong></td>
+              <td>Resistivo — pin A1</td>
+              <td>Mide la humedad del suelo (RAW ~20 seco a ~380 saturado), convertida a porcentaje 0–100%.</td>
+            </tr>
+            <tr>
+              <td><strong>Driver de potencia</strong></td>
+              <td>L298N</td>
+              <td>Controla la mini bomba de agua. ENA en D9 (PWM), IN1 en D10, IN2 en D11.</td>
+            </tr>
+            <tr>
+              <td><strong>Actuador</strong></td>
+              <td>Mini bomba + mangueras</td>
+              <td>Riego por goteo con dos ramales y cuatro goteros sobre el sustrato. Alimentación 12V.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODOS DE OPERACIÓN ─────────────────────────────────────────────────── -->
+<div class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">Lógica de control</div>
+    <h2 class="sec-title">Modos de operación del riego</h2>
+    <p class="sec-sub">El firmware del Arduino implementa tres modos. El sistema decide por sí mismo cuándo regar (edge computing), pero permite override manual desde el dashboard.</p>
+    <div class="modos-grid">
+      <div class="modo-card modo-auto">
+        <div class="modo-head">
+          <span class="modo-badge badge badge-ok">AUTO</span>
+          <h3 class="modo-tit">Automático</h3>
+        </div>
+        <p class="modo-txt">Si la humedad de suelo baja del umbral seco, activa la bomba por máximo 5 segundos. Al alcanzar el umbral húmedo, la detiene. Se repite en cada ciclo de lectura.</p>
+      </div>
+      <div class="modo-card">
+        <div class="modo-head">
+          <span class="modo-badge badge badge-wa">MANUAL ON</span>
+          <h3 class="modo-tit">Riego manual</h3>
+        </div>
+        <p class="modo-txt">Activa la bomba sin restricción de tiempo desde el dashboard. El sensor de suelo no la detiene; persiste hasta recibir la orden de apagado.</p>
+      </div>
+      <div class="modo-card">
+        <div class="modo-head">
+          <span class="modo-badge badge badge-lo">MANUAL OFF</span>
+          <h3 class="modo-tit">Detener</h3>
+        </div>
+        <p class="modo-txt">Detiene la bomba de inmediato y regresa el sistema al modo automático para retomar el control por sensores.</p>
+      </div>
+    </div>
+
+    <!-- Parámetros configurables -->
+    <div class="params-box">
+      <h3 class="params-tit">Parámetros configurables del firmware</h3>
+      <div class="params-grid">
+        <div class="param-item"><span class="param-val">80 RAW</span><span class="param-lbl">Umbral suelo seco → activa riego</span></div>
+        <div class="param-item"><span class="param-val">280 RAW</span><span class="param-lbl">Umbral suelo húmedo → detiene riego</span></div>
+        <div class="param-item"><span class="param-val">200 / 255</span><span class="param-lbl">Velocidad de bomba (~78% PWM)</span></div>
+        <div class="param-item"><span class="param-val">5 000 ms</span><span class="param-lbl">Tiempo máx. de un ciclo de riego</span></div>
+        <div class="param-item"><span class="param-val">2 000 ms</span><span class="param-lbl">Frecuencia de muestreo de sensores</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BIG DATA: LAS 5V ───────────────────────────────────────────────────── -->
+<div class="sec sec-crema">
+  <div class="sec-inner">
+    <div class="sec-chip">Big Data</div>
+    <h2 class="sec-title">Las 5 V del proyecto</h2>
+    <p class="sec-sub">El sistema cumple con los cinco criterios de Big Data aplicados a la agricultura de precisión.</p>
+    <div class="cincov-grid">
+      <div class="cincov-card">
+        <span class="cincov-v">Volumen</span>
+        <p class="cincov-txt">Lecturas cada 2 s → hasta 43 200 registros por día y por lote.</p>
+      </div>
+      <div class="cincov-card">
+        <span class="cincov-v">Velocidad</span>
+        <p class="cincov-txt">Procesamiento en tiempo real, con el dashboard actualizando a 1 Hz.</p>
+      </div>
+      <div class="cincov-card">
+        <span class="cincov-v">Variedad</span>
+        <p class="cincov-txt">5 variables heterogéneas: física, química y óptica del cultivo.</p>
+      </div>
+      <div class="cincov-card">
+        <span class="cincov-v">Veracidad</span>
+        <p class="cincov-txt">JSON validado con control de errores en cada transmisión.</p>
+      </div>
+      <div class="cincov-card">
+        <span class="cincov-v">Valor</span>
+        <p class="cincov-txt">Acción automática de riego basada en datos reales del suelo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTRUCCIONES ESP32 -->
+<div class="sec sec-white">
+  <div class="sec-inner">
+    <div class="sec-chip">Integración sensor</div>
+    <h2 class="sec-title">Conectar el ESP32 en tiempo real</h2>
+    <p class="sec-sub">En la siguiente versión, el ESP32 con Wi-Fi enviará los datos a este endpoint. Cada POST inserta una nueva fila en la base de datos y actualiza la vista automáticamente.</p>
+    <div class="code-block">
+      <div class="code-header">
+        <span>POST /maqueta/api/nueva</span>
+        <button class="code-copy" onclick="copiarCodigo()">Copiar</button>
+      </div>
+      <pre id="cod-esp">{
+  "temp":   22.5,
+  "hum":    70.1,
+  "pres":   753.0,
+  "luz":    85,
+  "suelo":  72,
+  "bomba":  0,
+  "manual": 0
+}</pre>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Chart.js para los gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/maqueta.js') }}"></script>
+{% endblock %}

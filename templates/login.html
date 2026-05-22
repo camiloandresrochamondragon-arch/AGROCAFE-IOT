@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrap">
+
+  <!-- Panel izquierdo decorativo -->
+  <div class="auth-side">
+    <div class="auth-side-art">
+      {% include 'partials/casas_svg.html' %}
+    </div>
+    <div class="auth-side-content">
+      <div class="auth-logo-icon">☕</div>
+      <h2 class="auth-brand">AgroIoT<br>Cafetero</h2>
+      <p class="auth-tagline">Sistema de monitoreo de riego inteligente para el Eje Cafetero colombiano con datos IoT en tiempo real.</p>
+      <blockquote class="auth-quote">
+        "El agua es el café del suelo. Con IoT, sabemos exactamente cuánto necesita cada planta."
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- Panel derecho con formularios -->
+  <div class="auth-main">
+    <div class="auth-box">
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab {% if tab == 'login' %}active{% endif %}"
+                onclick="showTab('login')">Iniciar sesión</button>
+        <button class="auth-tab {% if tab == 'register' %}active{% endif %}"
+                onclick="showTab('register')">Crear cuenta</button>
+      </div>
+
+      <!-- ── LOGIN ─────────────────────────────────────────── -->
+      <div class="auth-form" id="form-login"
+           style="{{ 'display:none' if tab != 'login' else '' }}">
+        <form method="POST" action="{{ url_for('auth.login') }}">
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" name="email" class="form-input"
+                   placeholder="tu@email.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <div class="input-eye-wrap">
+              <input type="password" name="password" id="pwd-login"
+                     class="form-input" placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="input-eye" onclick="togglePwd('pwd-login', this)">👁</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit">Ingresar al sistema</button>
+        </form>
+        <button class="form-link" onclick="showTab('forgot')">¿Olvidaste tu contraseña?</button>
+      </div>
+
+      <!-- ── REGISTER ──────────────────────────────────────── -->
+      <div class="auth-form" id="form-register"
+           style="{{ 'display:none' if tab != 'register' else '' }}">
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          <div class="form-group">
+            <label class="form-label">Nombre completo</label>
+            <input type="text" name="nombre" class="form-input"
+                   placeholder="Tu nombre" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" name="email" class="form-input"
+                   placeholder="tu@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <div class="input-eye-wrap">
+              <input type="password" name="password" id="pwd-reg"
+                     class="form-input" placeholder="Mínimo 8 caracteres" required>
+              <button type="button" class="input-eye" onclick="togglePwd('pwd-reg', this)">👁</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirmar contraseña</label>
+            <input type="password" name="confirm_password"
+                   class="form-input" placeholder="Repite tu contraseña" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Departamento</label>
+            <select name="departamento" class="form-input">
+              <option value="">Selecciona…</option>
+              <option>Caldas</option>
+              <option>Risaralda</option>
+              <option>Quindío</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">Crear mi cuenta</button>
+        </form>
+      </div>
+
+      <!-- ── FORGOT ─────────────────────────────────────────── -->
+      <div class="auth-form" id="form-forgot"
+           style="{{ 'display:none' if tab != 'forgot' else '' }}">
+        <div class="forgot-intro">
+          <h3 class="forgot-title">Recuperar contraseña</h3>
+          <p class="forgot-sub">Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
+        </div>
+        <form method="POST" action="{{ url_for('auth.forgot') }}">
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <input type="email" name="email" class="form-input"
+                   placeholder="tu@email.com" required>
+          </div>
+          <button type="submit" class="btn-submit">Enviar enlace de recuperación</button>
+        </form>
+        <button class="form-link" onclick="showTab('login')">← Volver al inicio de sesión</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}
