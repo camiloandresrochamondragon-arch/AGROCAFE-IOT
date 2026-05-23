@@ -92,44 +92,68 @@
 </div>
 
 <!-- ── POWER BI ───────────────────────────────────────────────────────────────── -->
-<div class="sec sec-crema">
-  <div class="sec-inner">
-    <div class="sec-chip">Visualizaciones</div>
-    <h2 class="sec-title">Reportes Power BI</h2>
-    <p class="sec-sub">Los reportes se sincronizan con los filtros aplicados arriba una vez conectada la base de datos.</p>
-    <div class="pbi-grid">
-      <div class="pbi-card">
-        <!-- Reemplazar el div de abajo por el iframe de PowerBI -->
-        <!-- <iframe title="Reporte PBI" width="100%" height="100%" src="TU_URL_POWERBI" frameborder="0" allowFullScreen></iframe> -->
-        <div class="pbi-placeholder">
-          <span class="pbi-ico">📊</span>
-          <strong>Humedad por municipio</strong>
-          <p>Barras comparativas filtradas por departamento</p>
-        </div>
-      </div>
-      <div class="pbi-card">
-        <div class="pbi-placeholder">
-          <span class="pbi-ico">📈</span>
-          <strong>Temperatura histórica</strong>
-          <p>Serie de tiempo por sensor y zona cafetera</p>
-        </div>
-      </div>
-      <div class="pbi-card">
-        <div class="pbi-placeholder">
-          <span class="pbi-ico">🗺️</span>
-          <strong>Mapa de calor</strong>
-          <p>Distribución geográfica del estrés hídrico</p>
-        </div>
-      </div>
-      <div class="pbi-card">
-        <div class="pbi-placeholder">
-          <span class="pbi-ico">💧</span>
-          <strong>Consumo vs precipitación</strong>
-          <p>Comparativo mensual de agua aplicada vs lluvia</p>
-        </div>
-      </div>
+<div style="padding: 2rem 1.5rem; display: flex; flex-direction: column; gap: 3rem; width: 100%; box-sizing: border-box;">
+
+  <div style="border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12); background: #fff; width: 100%;">
+    <div style="padding: 1rem 1.5rem; font-weight: bold; font-size: 1.1rem; background: #f5f0e8; border-bottom: 1px solid #e0d8cc;">
+      📊 Humedad por municipio
     </div>
+    <iframe
+      id="pbi-humedad"
+      width="100%"
+      height="900"
+      src="https://app.powerbi.com/view?r=eyJrIjoiMDRhNjkwNGMtNGRkOS00NWNhLTllZGYtNzEzN2U4Y2QzZjJkIiwidCI6IjA3ZGE2N2EwLTFmNDMtNGU4Yy05NzdmLTVmODhiNjQ3MGVlNiIsImMiOjR9&pageName=ea923bb8934068667960"
+      frameborder="0"
+      allowFullScreen="true"
+      style="display: block; width: 100%;">
+    </iframe>
   </div>
+
+  <div style="border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12); background: #fff; width: 100%;">
+    <div style="padding: 1rem 1.5rem; font-weight: bold; font-size: 1.1rem; background: #f5f0e8; border-bottom: 1px solid #e0d8cc;">
+      📈 Temperatura histórica
+    </div>
+    <iframe
+      id="pbi-temperatura"
+      width="100%"
+      height="900"
+      src="https://app.powerbi.com/view?r=eyJrIjoiMDRhNjkwNGMtNGRkOS00NWNhLTllZGYtNzEzN2U4Y2QzZjJkIiwidCI6IjA3ZGE2N2EwLTFmNDMtNGU4Yy05NzdmLTVmODhiNjQ3MGVlNiIsImMiOjR9&pageName=4d8382181004fbdc80b0"
+      frameborder="0"
+      allowFullScreen="true"
+      style="display: block; width: 100%;">
+    </iframe>
+  </div>
+
+  <div style="border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12); background: #fff; width: 100%;">
+    <div style="padding: 1rem 1.5rem; font-weight: bold; font-size: 1.1rem; background: #f5f0e8; border-bottom: 1px solid #e0d8cc;">
+      🗺️ Mapa de estaciones
+    </div>
+    <iframe
+      id="pbi-mapa"
+      width="100%"
+      height="900"
+      src="https://app.powerbi.com/view?r=eyJrIjoiMDRhNjkwNGMtNGRkOS00NWNhLTllZGYtNzEzN2U4Y2QzZjJkIiwidCI6IjA3ZGE2N2EwLTFmNDMtNGU4Yy05NzdmLTVmODhiNjQ3MGVlNiIsImMiOjR9&pageName=3c823afaf1fee345267e"
+      frameborder="0"
+      allowFullScreen="true"
+      style="display: block; width: 100%;">
+    </iframe>
+  </div>
+
+  <div style="border-radius: 14px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.12); background: #fff; width: 100%;">
+    <div style="padding: 1rem 1.5rem; font-weight: bold; font-size: 1.1rem; background: #f5f0e8; border-bottom: 1px solid #e0d8cc;">
+      💧 Total mediciones
+    </div>
+    <iframe
+      id="pbi-mediciones"
+      width="100%"
+      height="900"
+      src="https://app.powerbi.com/view?r=eyJrIjoiMDRhNjkwNGMtNGRkOS00NWNhLTllZGYtNzEzN2U4Y2QzZjJkIiwidCI6IjA3ZGE2N2EwLTFmNDMtNGU4Yy05NzdmLTVmODhiNjQ3MGVlNiIsImMiOjR9&pageName=52248d6a9c443cd2c105"
+      frameborder="0"
+      allowFullScreen="true"
+      style="display: block; width: 100%;">
+    </iframe>
+  </div>
+
 </div>
 
 {% endblock %}
@@ -137,7 +161,6 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 <script>
-  // Cargar datos al entrar
   cargarDatos();
 </script>
 {% endblock %}

@@ -66,6 +66,22 @@ async function cargarDatos() {
 
     const total = data.paginacion ? data.paginacion.total_lecturas : data.lecturas.length;
     count.textContent = `${total.toLocaleString('es-CO')} registro${total !== 1 ? 's' : ''}`;
+
+    // Sincronizar filtros con Power BI
+    const baseUrl = "https://app.powerbi.com/view?r=eyJrIjoiMDRhNjkwNGMtNGRkOS00NWNhLTllZGYtNzEzN2U4Y2QzZjJkIiwidCI6IjA3ZGE2N2EwLTFmNDMtNGU4Yy05NzdmLTVmODhiNjQ3MGVlNiIsImMiOjR9";
+    const paginas = {
+      "pbi-humedad":     "ea923bb8934068667960",
+      "pbi-temperatura": "4d8382181004fbdc80b0",
+      "pbi-mapa":        "3c823afaf1fee345267e",
+      "pbi-mediciones":  "52248d6a9c443cd2c105"
+    };
+    let filtro = "";
+    if (dept) filtro += `&filter=staging MedicionRaw/Departamento eq '${dept}'`;
+    if (mun)  filtro += (filtro.includes('filter') ? ` and staging MedicionRaw/Municipio eq '${mun}'` : `&filter=staging MedicionRaw/Municipio eq '${mun}'`);
+    Object.entries(paginas).forEach(([id, pageName]) => {
+      const iframe = document.getElementById(id);
+      if (iframe) iframe.src = `${baseUrl}&pageName=${pageName}${filtro}`;
+    });
   } catch (e) {
     tbody.innerHTML = '<tr><td colspan="8" class="tabla-loading">Error al cargar datos.</td></tr>';
     console.error('Error cargando datos:', e);
