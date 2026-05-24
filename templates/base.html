@@ -30,6 +30,10 @@
          class="nav-link {% if request.blueprint == 'maqueta' %}active{% endif %}">
         Maqueta
       </a>
+      <a href="{{ url_for('main.analytics') }}"
+         class="nav-link {% if request.endpoint == 'main.analytics' %}active{% endif %}">
+        Analytics
+      </a>
     </div>
 
     <div class="nav-actions">
