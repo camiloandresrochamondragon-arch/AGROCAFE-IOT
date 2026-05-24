@@ -49,7 +49,7 @@ async function cargarDatos() {
   if (dept)   params.set('departamento', dept);
   if (mun)    params.set('municipio', mun);
   if (estado) params.set('estado', estado);
-  params.set('pagina', paginaActual);
+  params.set('por_pagina', 100);
 
   const tbody = document.getElementById('tabla-body');
   const count = document.getElementById('tabla-count');

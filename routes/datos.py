@@ -10,7 +10,7 @@ datos_bp = Blueprint('datos', __name__)
 MEDICIONES_CRUDAS_IDEAM = 100000
 
 # Cuántas lecturas se muestran por página en la tabla
-POR_PAGINA = 50
+POR_PAGINA = 100
 
 
 @datos_bp.route('/')
