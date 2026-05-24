@@ -126,18 +126,6 @@ function renderTabla(lecturas) {
           : '-'}
       </td>
 
-      <td>
-        ${l.precipitacion != null
-          ? l.precipitacion + ' mm'
-          : '-'}
-      </td>
-
-      <td>
-        ${l.ph_suelo != null
-          ? l.ph_suelo
-          : '-'}
-      </td>
-
       <td>${badgeHTML(l.estado)}</td>
 
       <td>${l.fecha}</td>
