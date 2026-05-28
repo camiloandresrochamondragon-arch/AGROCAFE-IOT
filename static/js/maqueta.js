@@ -29,21 +29,15 @@ function crearGrafico(id, label, color) {
       animation: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: {
-          ticks: { maxTicksLimit: 8, font: { size: 10 } },
-          grid: { color: '#f0e8d8' }
-        },
-        y: {
-          ticks: { font: { size: 10 } },
-          grid: { color: '#f0e8d8' }
-        }
+        x: { ticks: { maxTicksLimit: 8, font: { size: 10 } }, grid: { color: '#f0e8d8' } },
+        y: { ticks: { font: { size: 10 } }, grid: { color: '#f0e8d8' } }
       }
     }
   });
 }
 
 function actualizarGrafico(chart, datos, campo) {
-  chart.data.labels  = datos.map(d => d.timestamp.slice(11, 19));
+  chart.data.labels = datos.map(d => d.timestamp.slice(11, 19));
   chart.data.datasets[0].data = datos.map(d => d[campo]);
   chart.update('none');
 }
@@ -54,8 +48,7 @@ function renderTabla(datos) {
     tbody.innerHTML = '<tr><td colspan="8" class="tabla-loading">Sin datos</td></tr>';
     return;
   }
-  // Mostrar las últimas 50 en la tabla (las más recientes primero)
-  const recientes = [...datos].reverse().slice(0, 50);
+  const recientes = [...datos].reverse().slice(0, 200);
   tbody.innerHTML = recientes.map(d => `
     <tr>
       <td>${d.timestamp}</td>
@@ -79,8 +72,15 @@ function actualizarKPIs(ultima) {
 }
 
 async function cargarDatos() {
+  const desde = document.getElementById('filtro-desde')?.value || '';
+  const hasta = document.getElementById('filtro-hasta')?.value || '';
+
+  let url = '/maqueta/api/mediciones?limit=500';
+  if (desde) url += `&desde=${desde}`;
+  if (hasta) url += `&hasta=${hasta}`;
+
   try {
-    const res   = await fetch('/maqueta/api/mediciones?limit=60');
+    const res   = await fetch(url);
     const datos = await res.json();
     if (!datos.length) return;
 
@@ -93,6 +93,12 @@ async function cargarDatos() {
   } catch (e) {
     console.warn('Error cargando mediciones:', e);
   }
+}
+
+function limpiarFiltrosMaqueta() {
+  document.getElementById('filtro-desde').value = '';
+  document.getElementById('filtro-hasta').value = '';
+  cargarDatos();
 }
 
 function copiarCodigo() {
@@ -112,6 +118,5 @@ document.addEventListener('DOMContentLoaded', function () {
   chartLuz   = crearGrafico('chart-luz',   'Luz',            COLOR_LUZ);
 
   cargarDatos();
-  // Polling cada 5 segundos
   setInterval(cargarDatos, 5000);
 });

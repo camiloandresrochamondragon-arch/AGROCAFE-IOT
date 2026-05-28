@@ -38,18 +38,26 @@ def index():
 @maqueta_bp.route('/api/mediciones')
 @login_required
 def api_mediciones():
-    """
-    Devuelve las últimas N mediciones para los gráficos.
-    ?limit=50  (default 60)
-    """
-    limit = request.args.get('limit', 60, type=int)
-    registros = (
-        MedicionMaqueta.query
-        .order_by(MedicionMaqueta.timestamp.desc())
-        .limit(limit)
-        .all()
-    )
-    # Invertir para que el gráfico vaya de antiguo a nuevo
+    limit  = request.args.get('limit', 100, type=int)
+    fecha_desde = request.args.get('desde', '')
+    fecha_hasta = request.args.get('hasta', '')
+
+    query = MedicionMaqueta.query
+
+    if fecha_desde:
+        try:
+            query = query.filter(MedicionMaqueta.timestamp >= datetime.strptime(fecha_desde, '%Y-%m-%d'))
+        except ValueError:
+            pass
+    if fecha_hasta:
+        try:
+            from datetime import timedelta
+            hasta = datetime.strptime(fecha_hasta, '%Y-%m-%d') + timedelta(days=1)
+            query = query.filter(MedicionMaqueta.timestamp < hasta)
+        except ValueError:
+            pass
+
+    registros = query.order_by(MedicionMaqueta.timestamp.desc()).limit(limit).all()
     registros.reverse()
     return jsonify([r.to_dict() for r in registros])
 

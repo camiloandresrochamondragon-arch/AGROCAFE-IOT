@@ -112,6 +112,20 @@
     </div>
   </div>
 </div>
+<!-- ── FILTROS FECHA ─────────────────────────────────────────────────────── -->
+<div class="filtros-bar">
+  <div class="filtros-inner">
+    <span class="filt-lbl">Filtrar por fecha:</span>
+    <div class="filtros-row">
+      <label style="font-size:0.9rem; color:#7B5230;">Desde:</label>
+      <input type="date" id="filtro-desde" class="filt-select" value="2026-05-21">
+      <label style="font-size:0.9rem; color:#7B5230;">Hasta:</label>
+      <input type="date" id="filtro-hasta" class="filt-select" value="2026-05-26">
+      <button class="btn-filtrar" onclick="cargarDatos()">Aplicar filtros</button>
+      <button class="btn-limpiar" onclick="limpiarFiltrosMaqueta()">Limpiar</button>
+    </div>
+  </div>
+</div>
 
 <!-- KPIs ÚLTIMA LECTURA -->
 <div class="kpis-bar">
@@ -443,4 +457,10 @@
 <!-- Chart.js para los gráficos -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/maqueta.js') }}"></script>
+
+function limpiarFiltrosMaqueta() {
+  document.getElementById('filtro-desde').value = '';
+  document.getElementById('filtro-hasta').value = '';
+  cargarDatos();
+}
 {% endblock %}
