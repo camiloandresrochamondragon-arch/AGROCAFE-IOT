@@ -38,7 +38,8 @@ def index():
 @maqueta_bp.route('/api/mediciones')
 @login_required
 def api_mediciones():
-    limit  = request.args.get('limit', 100, type=int)
+    limit       = request.args.get('limit', 10, type=int)
+    pagina      = request.args.get('pagina', 1, type=int)
     fecha_desde = request.args.get('desde', '')
     fecha_hasta = request.args.get('hasta', '')
 
@@ -57,9 +58,28 @@ def api_mediciones():
         except ValueError:
             pass
 
-    registros = query.order_by(MedicionMaqueta.timestamp.desc()).limit(limit).all()
-    registros.reverse()
-    return jsonify([r.to_dict() for r in registros])
+    total = query.count()
+    total_paginas = max(1, (total + limit - 1) // limit)
+    if pagina > total_paginas:
+        pagina = total_paginas
+
+    registros = (
+        query
+        .order_by(MedicionMaqueta.timestamp.desc())
+        .offset((pagina - 1) * limit)
+        .limit(limit)
+        .all()
+    )
+
+    return jsonify({
+        'datos': [r.to_dict() for r in registros],
+        'paginacion': {
+            'pagina': pagina,
+            'total_paginas': total_paginas,
+            'total': total,
+            'por_pagina': limit
+        }
+    })
 
 
 @maqueta_bp.route('/api/ultima')

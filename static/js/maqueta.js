@@ -1,11 +1,10 @@
-// ── maqueta.js — gráficos y polling en tiempo real ───────────────────────────
-
 const COLOR_TEMP  = '#e74c3c';
 const COLOR_HUM   = '#3498db';
 const COLOR_SUELO = '#5c8a3c';
 const COLOR_LUZ   = '#f39c12';
 
 let chartTemp, chartHum, chartSuelo, chartLuz;
+let paginaActual = 1;
 
 function crearGrafico(id, label, color) {
   const ctx = document.getElementById(id).getContext('2d');
@@ -48,8 +47,7 @@ function renderTabla(datos) {
     tbody.innerHTML = '<tr><td colspan="8" class="tabla-loading">Sin datos</td></tr>';
     return;
   }
-  const recientes = [...datos].reverse().slice(0, 200);
-  tbody.innerHTML = recientes.map(d => `
+  tbody.innerHTML = datos.map(d => `
     <tr>
       <td>${d.timestamp}</td>
       <td>${d.temp}</td>
@@ -60,6 +58,24 @@ function renderTabla(datos) {
       <td>${d.bomba ? '<span class="badge badge-ok">ON</span>' : '<span class="badge">OFF</span>'}</td>
       <td>${d.manual ? '<span class="badge badge-wa">Manual</span>' : '—'}</td>
     </tr>`).join('');
+}
+
+function renderPaginacion(pag) {
+  const cont = document.getElementById('paginacion-maqueta');
+  if (!cont || !pag || pag.total_paginas <= 1) {
+    if (cont) cont.innerHTML = '';
+    return;
+  }
+  cont.innerHTML = `
+    <button class="pag-btn" onclick="cambiarPaginaMaqueta(-1)" ${pag.pagina <= 1 ? 'disabled' : ''}>‹ Anterior</button>
+    <span class="pag-info">Página ${pag.pagina} de ${pag.total_paginas} — ${pag.total.toLocaleString('es-CO')} registros</span>
+    <button class="pag-btn" onclick="cambiarPaginaMaqueta(1)" ${pag.pagina >= pag.total_paginas ? 'disabled' : ''}>Siguiente ›</button>
+  `;
+}
+
+function cambiarPaginaMaqueta(dir) {
+  paginaActual += dir;
+  cargarDatos();
 }
 
 function actualizarKPIs(ultima) {
@@ -75,21 +91,22 @@ async function cargarDatos() {
   const desde = document.getElementById('filtro-desde')?.value || '';
   const hasta = document.getElementById('filtro-hasta')?.value || '';
 
-  let url = '/maqueta/api/mediciones?limit=500';
+  let url = `/maqueta/api/mediciones?limit=10&pagina=${paginaActual}`;
   if (desde) url += `&desde=${desde}`;
   if (hasta) url += `&hasta=${hasta}`;
 
   try {
-    const res   = await fetch(url);
-    const datos = await res.json();
-    if (!datos.length) return;
+    const res  = await fetch(url);
+    const json = await res.json();
+    const datos = json.datos || [];
 
     actualizarGrafico(chartTemp,  datos, 'temp');
     actualizarGrafico(chartHum,   datos, 'hum');
     actualizarGrafico(chartSuelo, datos, 'suelo');
     actualizarGrafico(chartLuz,   datos, 'luz');
     renderTabla(datos);
-    actualizarKPIs(datos[datos.length - 1]);
+    renderPaginacion(json.paginacion);
+    if (datos.length) actualizarKPIs(datos[0]);
   } catch (e) {
     console.warn('Error cargando mediciones:', e);
   }
@@ -98,6 +115,12 @@ async function cargarDatos() {
 function limpiarFiltrosMaqueta() {
   document.getElementById('filtro-desde').value = '';
   document.getElementById('filtro-hasta').value = '';
+  paginaActual = 1;
+  cargarDatos();
+}
+
+function aplicarFiltrosMaqueta() {
+  paginaActual = 1;
   cargarDatos();
 }
 
@@ -110,13 +133,10 @@ function copiarCodigo() {
   });
 }
 
-// Inicializar
 document.addEventListener('DOMContentLoaded', function () {
   chartTemp  = crearGrafico('chart-temp',  'Temperatura',    COLOR_TEMP);
   chartHum   = crearGrafico('chart-hum',   'Humedad aire',   COLOR_HUM);
   chartSuelo = crearGrafico('chart-suelo', 'Humedad suelo',  COLOR_SUELO);
   chartLuz   = crearGrafico('chart-luz',   'Luz',            COLOR_LUZ);
-
   cargarDatos();
-  setInterval(cargarDatos, 5000);
 });

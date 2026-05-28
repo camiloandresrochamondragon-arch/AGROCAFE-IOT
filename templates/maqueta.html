@@ -19,21 +19,20 @@
     <div class="sec-chip">El prototipo físico</div>
     <h2 class="sec-title">Así se ve la maqueta</h2>
     <p class="sec-sub">Construida sobre una caja plástica con tierra y sustrato orgánico, integra el cultivo, los sensores y el sistema de riego por goteo en un solo módulo.</p>
-
     <div class="maqueta-galeria">
       <figure class="maq-foto maq-foto-grande">
         <img src="{{ url_for('static', filename='img/maqueta/maqueta-general.jpg') }}"
-             alt="Vista general de la maqueta: cultivo de lechuga junto al módulo de electrónica con Arduino y sensores">
+             alt="Vista general de la maqueta">
         <figcaption>Vista general — cultivo + módulo de control electrónico</figcaption>
       </figure>
       <figure class="maq-foto">
         <img src="{{ url_for('static', filename='img/maqueta/maqueta-electronica.jpg') }}"
-             alt="Detalle de la electrónica: Arduino Nano, sensor BME280, driver L298N y cableado">
+             alt="Detalle de la electrónica">
         <figcaption>Módulo de sensores y driver de la bomba</figcaption>
       </figure>
       <figure class="maq-foto">
         <img src="{{ url_for('static', filename='img/maqueta/maqueta-cultivo.jpg') }}"
-             alt="Vista superior del cultivo con el sistema de riego por goteo y mangueras">
+             alt="Vista superior del cultivo">
         <figcaption>Cultivo con riego por goteo y aspersores</figcaption>
       </figure>
     </div>
@@ -45,7 +44,7 @@
   <div class="sec-inner">
     <div class="sec-chip">El problema</div>
     <h2 class="sec-title">¿Por qué riego inteligente?</h2>
-    <p class="sec-sub">En el Eje Cafetero, los sistemas de riego tradicionales operan por horarios fijos o de forma manual, sin considerar las condiciones reales del suelo ni el clima del momento. Esto genera dos problemas críticos:</p>
+    <p class="sec-sub">En el Eje Cafetero, los sistemas de riego tradicionales operan por horarios fijos o de forma manual, sin considerar las condiciones reales del suelo ni el clima del momento.</p>
     <div class="problema-grid">
       <div class="problema-card">
         <div class="problema-ico ico-azul">💧</div>
@@ -72,7 +71,6 @@
     <div class="sec-chip">Cómo funciona</div>
     <h2 class="sec-title">Arquitectura del sistema</h2>
     <p class="sec-sub">Un pipeline completo desde la captura física del dato hasta la visualización analítica, en cinco capas funcionales.</p>
-
     <div class="capas-lista">
       <div class="capa-item">
         <div class="capa-num">1</div>
@@ -112,7 +110,8 @@
     </div>
   </div>
 </div>
-<!-- ── FILTROS FECHA ─────────────────────────────────────────────────────── -->
+
+<!-- ── FILTROS POR FECHA ───────────────────────────────────────────────────── -->
 <div class="filtros-bar">
   <div class="filtros-inner">
     <span class="filt-lbl">Filtrar por fecha:</span>
@@ -121,69 +120,55 @@
       <input type="date" id="filtro-desde" class="filt-select" value="2026-05-21">
       <label style="font-size:0.9rem; color:#7B5230;">Hasta:</label>
       <input type="date" id="filtro-hasta" class="filt-select" value="2026-05-26">
-      <button class="btn-filtrar" onclick="cargarDatos()">Aplicar filtros</button>
+      <button class="btn-filtrar" onclick="aplicarFiltrosMaqueta()">Aplicar filtros</button>
       <button class="btn-limpiar" onclick="limpiarFiltrosMaqueta()">Limpiar</button>
     </div>
   </div>
 </div>
 
-<!-- KPIs ÚLTIMA LECTURA -->
+<!-- ── KPIs ÚLTIMA LECTURA ─────────────────────────────────────────────────── -->
 <div class="kpis-bar">
   <div class="kpis-inner kpis-6">
     <div class="kpi-card">
       <div class="kpi-ico ico-rojo">🌡️</div>
       <div>
-        <div class="kpi-val" id="live-temp">
-          {% if ultima %}{{ ultima.temp }}°C{% else %}—{% endif %}
-        </div>
+        <div class="kpi-val" id="live-temp">{% if ultima %}{{ ultima.temp }}°C{% else %}—{% endif %}</div>
         <div class="kpi-lbl">Temperatura</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-ico ico-azul">💧</div>
       <div>
-        <div class="kpi-val" id="live-hum">
-          {% if ultima %}{{ ultima.hum }}%{% else %}—{% endif %}
-        </div>
+        <div class="kpi-val" id="live-hum">{% if ultima %}{{ ultima.hum }}%{% else %}—{% endif %}</div>
         <div class="kpi-lbl">Humedad aire</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-ico ico-cafe">🌱</div>
       <div>
-        <div class="kpi-val" id="live-suelo">
-          {% if ultima %}{{ ultima.suelo }}%{% else %}—{% endif %}
-        </div>
+        <div class="kpi-val" id="live-suelo">{% if ultima %}{{ ultima.suelo }}%{% else %}—{% endif %}</div>
         <div class="kpi-lbl">Humedad suelo</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-ico ico-ocre">☀️</div>
       <div>
-        <div class="kpi-val" id="live-luz">
-          {% if ultima %}{{ ultima.luz }} lux{% else %}—{% endif %}
-        </div>
+        <div class="kpi-val" id="live-luz">{% if ultima %}{{ ultima.luz }} lux{% else %}—{% endif %}</div>
         <div class="kpi-lbl">Luz</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-ico ico-verde">📊</div>
       <div>
-        <div class="kpi-val" id="live-pres">
-          {% if ultima %}{{ ultima.pres }} hPa{% else %}—{% endif %}
-        </div>
+        <div class="kpi-val" id="live-pres">{% if ultima %}{{ ultima.pres }} hPa{% else %}—{% endif %}</div>
         <div class="kpi-lbl">Presión</div>
       </div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-ico {% if ultima and ultima.bomba %}ico-rojo{% else %}ico-cafe{% endif %}">
-        ⚙️
-      </div>
+      <div class="kpi-ico {% if ultima and ultima.bomba %}ico-rojo{% else %}ico-cafe{% endif %}">⚙️</div>
       <div>
         <div class="kpi-val" id="live-bomba">
-          {% if ultima %}
-            {% if ultima.bomba %}🟢 ON{% else %}⚪ OFF{% endif %}
-          {% else %}—{% endif %}
+          {% if ultima %}{% if ultima.bomba %}🟢 ON{% else %}⚪ OFF{% endif %}{% else %}—{% endif %}
         </div>
         <div class="kpi-lbl">Bomba riego</div>
       </div>
@@ -191,7 +176,7 @@
   </div>
 </div>
 
-<!-- RESUMEN ESTADÍSTICO -->
+<!-- ── RESUMEN ESTADÍSTICO ─────────────────────────────────────────────────── -->
 {% if stats and stats.total %}
 <div class="sec sec-crema">
   <div class="sec-inner">
@@ -227,7 +212,7 @@
 </div>
 {% endif %}
 
-<!-- GRÁFICOS -->
+<!-- ── GRÁFICOS ────────────────────────────────────────────────────────────── -->
 <div class="sec sec-white">
   <div class="sec-inner">
     <div class="sec-chip">Visualización en tiempo real</div>
@@ -236,28 +221,28 @@
       <div class="grafico-card">
         <div class="grafico-header">
           <span class="grafico-tit">🌡️ Temperatura (°C)</span>
-          <span class="grafico-badge">Últimas 60 lecturas</span>
+          <span class="grafico-badge">Lecturas del período</span>
         </div>
         <canvas id="chart-temp" height="120"></canvas>
       </div>
       <div class="grafico-card">
         <div class="grafico-header">
           <span class="grafico-tit">💧 Humedad aire (%)</span>
-          <span class="grafico-badge">Últimas 60 lecturas</span>
+          <span class="grafico-badge">Lecturas del período</span>
         </div>
         <canvas id="chart-hum" height="120"></canvas>
       </div>
       <div class="grafico-card">
         <div class="grafico-header">
           <span class="grafico-tit">🌱 Humedad suelo (%)</span>
-          <span class="grafico-badge">Últimas 60 lecturas</span>
+          <span class="grafico-badge">Lecturas del período</span>
         </div>
         <canvas id="chart-suelo" height="120"></canvas>
       </div>
       <div class="grafico-card">
         <div class="grafico-header">
           <span class="grafico-tit">☀️ Luz (lux)</span>
-          <span class="grafico-badge">Últimas 60 lecturas</span>
+          <span class="grafico-badge">Lecturas del período</span>
         </div>
         <canvas id="chart-luz" height="120"></canvas>
       </div>
@@ -265,7 +250,7 @@
   </div>
 </div>
 
-<!-- TABLA DE MEDICIONES -->
+<!-- ── TABLA DE MEDICIONES ─────────────────────────────────────────────────── -->
 <div class="tabla-section">
   <div class="tabla-inner">
     <div class="tabla-card">
@@ -294,6 +279,7 @@
           </tbody>
         </table>
       </div>
+      <div id="paginacion-maqueta" style="display:flex; justify-content:center; align-items:center; gap:1rem; margin:1.5rem 0;"></div>
     </div>
   </div>
 </div>
@@ -364,25 +350,23 @@
           <span class="modo-badge badge badge-ok">AUTO</span>
           <h3 class="modo-tit">Automático</h3>
         </div>
-        <p class="modo-txt">Si la humedad de suelo baja del umbral seco, activa la bomba por máximo 5 segundos. Al alcanzar el umbral húmedo, la detiene. Se repite en cada ciclo de lectura.</p>
+        <p class="modo-txt">Si la humedad de suelo baja del umbral seco, activa la bomba por máximo 5 segundos. Al alcanzar el umbral húmedo, la detiene.</p>
       </div>
       <div class="modo-card">
         <div class="modo-head">
           <span class="modo-badge badge badge-wa">MANUAL ON</span>
           <h3 class="modo-tit">Riego manual</h3>
         </div>
-        <p class="modo-txt">Activa la bomba sin restricción de tiempo desde el dashboard. El sensor de suelo no la detiene; persiste hasta recibir la orden de apagado.</p>
+        <p class="modo-txt">Activa la bomba sin restricción de tiempo desde el dashboard. Persiste hasta recibir la orden de apagado.</p>
       </div>
       <div class="modo-card">
         <div class="modo-head">
           <span class="modo-badge badge badge-lo">MANUAL OFF</span>
           <h3 class="modo-tit">Detener</h3>
         </div>
-        <p class="modo-txt">Detiene la bomba de inmediato y regresa el sistema al modo automático para retomar el control por sensores.</p>
+        <p class="modo-txt">Detiene la bomba de inmediato y regresa el sistema al modo automático.</p>
       </div>
     </div>
-
-    <!-- Parámetros configurables -->
     <div class="params-box">
       <h3 class="params-tit">Parámetros configurables del firmware</h3>
       <div class="params-grid">
@@ -427,7 +411,7 @@
   </div>
 </div>
 
-<!-- INSTRUCCIONES ESP32 -->
+<!-- ── INSTRUCCIONES ESP32 ────────────────────────────────────────────────── -->
 <div class="sec sec-white">
   <div class="sec-inner">
     <div class="sec-chip">Integración sensor</div>
@@ -454,13 +438,6 @@
 {% endblock %}
 
 {% block scripts %}
-<!-- Chart.js para los gráficos -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/maqueta.js') }}"></script>
-
-function limpiarFiltrosMaqueta() {
-  document.getElementById('filtro-desde').value = '';
-  document.getElementById('filtro-hasta').value = '';
-  cargarDatos();
-}
 {% endblock %}
